@@ -1,0 +1,22 @@
+#!/bin/bash
+function install_minecraft {
+	local home="$imagedir/usr/local/minecraft"
+	local user='minecraft'
+	mkdir -p $home
+	
+	chroot $imagedir useradd \
+		--home $home --comment "Minecraft server" \
+		--shell '/bin/false' -M \ # Don't create the homedir
+		$user
+	
+	local jar_url='https://s3.amazonaws.com/MinecraftDownload/launcher/minecraft_server.jar'
+	curl -s -o "$home/minecraft_server.jar" "$jar_url"
+	
+	cp "$plugindir/scripts/run_minecraft.sh" "$home/run_minecraft.sh"
+	
+	chown -R $user $home
+	chmod -R u+rw "$home"
+	chmod u+x "$home/run_minecraft.sh"
+}
+
+install_minecraft

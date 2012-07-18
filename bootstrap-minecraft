@@ -1,0 +1,8 @@
+#!/bin/bash
+function bootstrap_minecraft {
+	packages+=('sun-java6-jre')
+	insert_task_before $TASK_INITSCRIPTS "$plugindir/tasks/install-minecraft"
+	init_scripts+=("$plugindir/scripts/minecraft")
+}
+
+bootstrap_minecraft
