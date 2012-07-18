@@ -1,8 +1,12 @@
 #!/bin/bash
 function bootstrap_minecraft {
+	git clone 'git://github.com/marcuswhybrow/minecraft-server-manager.git' 'msm'
 	packages+=('sun-java6-jre')
+	packages+=('screen')
+	packages+=('rsync')
+	packages+=('zip')
+	packages+=('bash-completion')
 	insert_task_before $TASK_INITSCRIPTS "$plugindir/tasks/install-minecraft"
-	init_scripts+=("$plugindir/scripts/minecraft")
 }
 
 bootstrap_minecraft

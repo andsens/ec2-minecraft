@@ -1,0 +1,35 @@
+#!/bin/bash
+function install_msm {
+	local msm_dir="$plugindir/msm"
+	init_scripts+=("$msm_dir/init/msm")
+	
+	local home="/usr/local/minecraft-server-manager"
+	local img_home="$imagedir/usr/local/minecraft"
+	local user='minecraft'
+	
+	local cronjob="$imagedir/etc/cron.d/msm"
+	cp "$msm_dir/cron/msm" "$cronjob"
+	
+	local config="$imagedir/etc/msm.conf"
+	cp "$msm_dir/msm.conf" "$config"
+	
+	cp "$msm_dir/bash_completion/msm" "$imagedir/etc/bash_completion.d/msm"
+	
+	# Simpler invocation
+	chroot $imagedir ln -s "/etc/init.d/msm" "/usr/local/bin/msm"
+	
+	# Create the minecraft user
+	chroot $imagedir mkdir -p $home
+	chroot $imagedir useradd \
+		--home $home --comment "Minecraft server" \
+		--shell '/bin/false' -M \ # Don't create the homedir
+		$user
+	chroot $imagedir chown -R $user $home
+	
+	# Adjust the cron and config files
+	sed -i "s%^minecraft   /etc/init.d%$user   /etc/init.d%g" "$cronjob"
+	sed -i "s%USERNAME=\"minecraft\"%USERNAME=\"$user\"%g" "$config"
+	sed -i "s%\"/opt/msm%\"/$home%g" "$config"
+}
+
+install_msm
