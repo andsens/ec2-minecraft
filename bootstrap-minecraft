@@ -1,6 +1,9 @@
 #!/bin/bash
 function bootstrap_minecraft {
-	git clone 'git://github.com/marcuswhybrow/minecraft-server-manager.git' "$plugindir/msm"
+	local msm_dir="$plugindir/msm"
+	if [ ! -e "$msm_dir" ]; then
+		git clone 'git://github.com/marcuswhybrow/minecraft-server-manager.git' "$msm_dir"
+	fi
 	packages+=('default-jre-headless')
 	packages+=('screen')
 	packages+=('rsync')
