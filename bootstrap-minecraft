@@ -9,7 +9,7 @@ function bootstrap_minecraft {
 	packages+=('rsync')
 	packages+=('zip')
 	packages+=('bash-completion')
-	insert_task_before $TASK_INITSCRIPTS "$plugindir/tasks/install-minecraft"
+	insert_task_before $TASK_INITSCRIPTS "$plugindir/tasks/install-msm"
 }
 
 bootstrap_minecraft
