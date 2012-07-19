@@ -29,7 +29,7 @@ function install_msm {
 	# Adjust the cron and config files
 	sed -i "s%^minecraft   /etc/init.d%$user   /etc/init.d%g" "$cronjob"
 	sed -i "s%USERNAME=\"minecraft\"%USERNAME=\"$user\"%g" "$config"
-	sed -i "s%\"/opt/msm%\"/$home%g" "$config"
+	sed -i "s%\"/opt/msm%\"$home%g" "$config"
 }
 
 install_msm
